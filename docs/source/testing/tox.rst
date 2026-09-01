@@ -5,7 +5,7 @@
 
 ``tox`` is an automation project we use to run our testing scenarios. It gives us
 the ability to create a dynamic matrix of many testing scenarios, isolated testing environments
-and a provides a single entry point to run all tests in an automated and repeatable fashion.
+and provides a single entry point to run all tests in an automated and repeatable fashion.
 
 Documentation for tox can be found `here <https://tox.readthedocs.io/en/latest/>`_.
 
@@ -19,7 +19,7 @@ When running ``tox`` we've allowed for the usage of environment variables to twe
 of the playbook run using Ansible's ``--extra-vars``. It's helpful in Jenkins jobs or for manual test
 runs of ``ceph-ansible``.
 
-The following environent variables are available for use:
+The following environment variables are available for use:
 
 * ``CEPH_DOCKER_REGISTRY``: (default: ``quay.io``) This would configure the ``ceph-ansible`` variable ``ceph_docker_registry``.
 
@@ -57,7 +57,7 @@ on all subsections inside of a tox section please refer to the tox documentation
 
 * ``testenv`` : This is the main section of the ``tox.ini`` file and is run on every scenario. This section contains many *factors* that define conditional
   settings depending on the scenarios defined in the ``envlist``. For example, the factor ``centos7_cluster`` in the ``changedir`` subsection of ``testenv`` sets
-  the directory that tox will change do when that factor is selected. This is an important behavior that allows us to use the same ``tox.ini`` and reuse commands while
+  the directory that tox will change to when that factor is selected. This is an important behavior that allows us to use the same ``tox.ini`` and reuse commands while
   tweaking certain sections per testing scenario.
 
 
@@ -67,9 +67,9 @@ Modifying or Adding environments
 --------------------------------
 
 The tox environments are controlled by the ``envlist`` subsection of the ``[tox]`` section. Anything inside of ``{}`` is considered a *factor* and will be included
-in the dynamic matrix that tox creates. Inside of ``{}`` you can include a comma separated list of the *factors*. Do not use a hyphen (``-``) as part
+in the dynamic matrix that tox creates. Inside of ``{}`` you can include a comma-separated list of the *factors*. Do not use a hyphen (``-``) as part
 of the *factor* name as those are used by tox as the separator between different factor sets.
 
-For example, if wanted to add a new test *factor* for the next Ceph release of luminious this is how you'd accomplish that. Currently, the first factor set in our ``envlist``
+For example, if wanted to add a new test *factor* for the next Ceph release of luminous this is how you'd accomplish that. Currently, the first factor set in our ``envlist``
 is used to define the Ceph release (``{jewel,kraken}-...``). To add luminous you'd change that to look like ``{luminous,kraken}-...``. In the ``testenv`` section
 this is a subsection called ``setenv`` which allows you to provide environment variables to the tox environment and we support an environment variable called ``CEPH_STABLE_RELEASE``. To ensure that all the new tests that are created by adding the luminous *factor* you'd do this in that section: ``luminous: CEPH_STABLE_RELEASE=luminous``.

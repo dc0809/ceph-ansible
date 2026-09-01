@@ -17,7 +17,7 @@ structure:
 For example: ``tests/functional/centos/7/journal-collocation``
 
 Within a test scenario there are a few files that define what that specific
-scenario needs for the tests, like how many OSD nodes or MON nodes. Tls
+scenario needs for the tests, like how many OSD nodes or MON nodes.
 
 At the very least, a scenario will need these files:
 

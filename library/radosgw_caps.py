@@ -87,7 +87,7 @@ author:
 """
 
 EXAMPLES = """
-- name: add users read capabilties to a user
+- name: add users read capabilities to a user
   radosgw_caps:
     name: foo
     state: present

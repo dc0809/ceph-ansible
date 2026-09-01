@@ -7,7 +7,7 @@ together to provide:
 * a "scenario" configuration file in Python, that defines what nodes are
   configured to what roles and what 'components' they will test
 * tests (in functional/tests/) that will all run unless skipped explicitly when
-  testing a distinct feature dependant on the ansible run.
+  testing a distinct feature dependent on the ansible run.
 
 
 Example run
@@ -38,7 +38,7 @@ For example in: ``tests/functional/ubuntu/16.04/mon/initial_members``::
 It is *required* to be in that directory. It is what triggers all the
 preprocessing of complex arguments based on the cluster setup.
 
-Run vagrant first to setup the environment::
+Run Vagrant first to set up the environment::
 
    vagrant up --no-provision --provider=virtualbox
 

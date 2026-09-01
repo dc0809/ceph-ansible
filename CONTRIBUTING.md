@@ -7,9 +7,9 @@
 - All commits should have a subject and a body
 - The commit subject should briefly describe what the commit changes
 - The commit body should describe the problem addressed and the chosen solution
-  - What was the problem and solution? Why that solution? Were there alternative ideas?
+- What was the problem and solution? Why that solution? Were there alternative ideas?
 - Wrap commit subjects and bodies to 80 characters
-- Sign-off your commits
+- Sign off your commits
 - Add a best-effort scope designation to commit subjects. This could be a directory name, file name,
   or the name of a logical grouping of code. Examples:
   - library: add a placeholder module for the validate action plugin
@@ -32,26 +32,26 @@ README for example, add the text `[skip ci]` to the PR title.
 
 Merging PR is controlled by [mergify](https://mergify.io/) by the following rules:
 
-- at least one approuval from a maintainer
+- at least one approval from a maintainer
 - a SUCCESS from the CI pipeline "ceph-ansible PR Pipeline"
 
-If you work is not ready for review/merge, please request the DNM label via a comment or the title of your PR.
+If your work is not ready for review/merge, please request the DNM label via a comment or the title of your PR.
 This will prevent the engine merging your pull request.
 
 ### Backports (maintainers only)
 
 If you wish to see your work from 'main' being backported to a stable branch you can ping a maintainer
 so he will set the backport label on your PR. Once the PR from main is merged, a backport PR will be created by mergify,
-if there is a cherry-pick conflict you must resolv it by pulling the branch.
+if there is a cherry-pick conflict you must resolve it by pulling the branch.
 
 **NEVER** push directly into a stable branch, **unless** the code from main has diverged so much that the files don't exist in the stable branch.
-If that happens, inform the maintainers of the reasons why you pushed directly into a stable branch, if the reason is invalid, maintainers will immediatly close your pull request.
+If that happens, inform the maintainers of the reasons why you pushed directly into a stable branch, if the reason is invalid, maintainers will immediately close your pull request.
 
 ## Good to know
 
 ### Sample files
 
-The sample files we provide in `group_vars/` are versionned,
+The sample files we provide in `group_vars/` are versioned,
 they are a copy of what their respective `./roles/<role>/defaults/main.yml` contain.
 
 It means if you are pushing a patch modifying one of these files:
@@ -68,9 +68,8 @@ It means if you are pushing a patch modifying one of these files:
 - `./roles/ceph-mon/defaults/main.yml`
 - `./roles/ceph-rgw/defaults/main.yml`
 - `./roles/ceph-container-common/defaults/main.yml`
-- `./roles/ceph-common-coreos/defaults/main.yml`
 
-You will have to get the corresponding sample file updated, there is a script which do it for you.
+You will have to get the corresponding sample file updated, there is a script which does it for you.
 You must run `./generate_group_vars_sample.sh` before you commit your changes so you are guaranteed to have consistent content for these files.
 
 ### Keep your branch up-to-date
@@ -81,18 +80,18 @@ A rebased branch is more likely to be merged easily & shorter.
 
 ### Organize your commits
 
-Do not split your commits unnecessary, we are used to see pull request with useless additional commits like
+Do not split your commits unnecessarily. We are used to see pull request with useless additional commits like
 "I'm addressing reviewer's comments". So, please, squash and/or amend them as much as possible.
 
 Similarly, split them when needed, if you are modifying several parts in ceph-ansible or pushing a large
-patch you may have to split yours commit properly so it's better to understand your work.
-Some recommandations:
+patch you may have to split your commits properly so it's better to understand your work.
+Some recommendations:
 
 - one fix = one commit,
 - do not mix multiple topics in a single commit,
-- if you PR contains a large number of commits that are each other totally unrelated, it should probably even be split in several PRs.
+- if your PR contains a large number of commits that are each other totally unrelated, it should probably even be split in several PRs.
 
-If you've broken your work up into a set of sequential changes and each commit pass the tests on their own then that's fine.
+If you've broken your work up into a set of sequential changes and each commit passes the tests on their own then that's fine.
 If you've got commits fixing typos or other problems introduced by previous commits in the same PR, then those should be squashed before merging.
 
 If you are new to Git, these links might help:

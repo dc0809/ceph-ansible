@@ -1,4 +1,4 @@
-Adding/Removing OSD(s) after a cluster is deployed is a common operation that should be straight-forward to achieve.
+Adding/Removing OSD(s) after a cluster is deployed is a common operation that should be straightforward to achieve.
 
 
 Adding osd(s)

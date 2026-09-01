@@ -61,7 +61,7 @@ to follow (most of them are 1 line settings).
 
 * **CEPH SOURCE**: (string) indicate whether a ``dev`` or ``stable`` release is
   needed. A ``stable`` release will use the latest stable release of Ceph,
-  a ``dev`` will use ``shaman`` (http://shaman.ceph.com)
+  a ``dev`` will use ``shaman`` (https://shaman.ceph.com)
 
 * **SUBNETS**: These are used for configuring the network availability of each
   server that will be booted as well as being used as configuration for
@@ -109,7 +109,7 @@ are needed:
   booting machines faster because no files need to be synced over.
 
 * **os_tuning_params**: These are passed onto ``ceph-ansible`` as part of the
-  variables for "system tunning". These shouldn't be changed.
+  variables for "system tuning". These shouldn't be changed.
 
 
 .. _vagrant_file:

@@ -75,14 +75,13 @@ where the test is being executed, this is captured once, before tests run:
 * ``total_osds``: total number of OSDs on the current node
 * ``cluster_name``: the name of the Ceph cluster (which defaults to 'ceph')
 * ``conf_path``: since the cluster name can change the file path for the Ceph
-  configuration, this gets sets according to the cluster name.
+  configuration, this gets set according to the cluster name.
 * ``cluster_address``: the address used for cluster communication. All
   environments are set up with 2 interfaces, 1 being used exclusively for the
   cluster
 * ``docker``: A boolean that identifies a Ceph Docker cluster
 * ``osds``: A list of OSD IDs, unless it is a Docker cluster, where it gets the
   name of the devices (e.g. ``sda1``)
-
 
 Other Fixtures
 --------------

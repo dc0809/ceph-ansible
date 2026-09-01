@@ -22,7 +22,7 @@ nvme_device_lvs:
 hdd_lv_size: 100%FREE
 
 # Since this playbook can be run multiple times across different devices, {{ var.split('/')[-1] }} is used quite frequently in this play-book.
-# This is used to strip the device name away from its path (ex: sdc from /dev/sdc) to differenciate the names of vgs, journals, or lvs if the prefixes are not changed across multiple runs.
+# This is used to strip the device name away from its path (ex: sdc from /dev/sdc) to differentiate the names of vgs, journals, or lvs if the prefixes are not changed across multiple runs.
 nvme_device_basename: "{{ nvme_device.split('/')[-1] }}"
 
 # Only one volume group is created in the playbook for all the LVs on NVMe. This volume group takes up the entire device specified in "nvme_device".

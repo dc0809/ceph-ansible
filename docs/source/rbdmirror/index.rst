@@ -12,7 +12,7 @@ group_vars from the primary cluster:
       ceph_rbd_mirror_configure: true
       ceph_rbd_mirror_pool: rbd
 
-Optionnally, you can tell ceph-ansible to set the name and the secret of the keyring you want to create:
+Optionally, you can tell ceph-ansible to set the name and the secret of the keyring you want to create:
 
 .. code-block:: yaml
 
@@ -37,10 +37,10 @@ Once your variables are defined, you can run the playbook (you might want to run
 
 The configuration of the rbd mirror replication strictly speaking is done on the secondary cluster.
 The rbd-mirror daemon pulls the data from the primary cluster. This is where the rbd mirror peer addition has to be done.
-The configuration is similar with what was done on the primary cluster, it just needs few additional variables.
+The configuration is similar to what was done on the primary cluster, it just needs few additional variables.
 
 ``ceph_rbd_mirror_remote_user`` : This user must match the name defined in the variable ``ceph_rbd_mirror_local_user`` from the primary cluster.
-``ceph_rbd_mirror_remote_mon_hosts`` : This must a comma separated list of the monitor addresses from the primary cluster.
+``ceph_rbd_mirror_remote_mon_hosts`` : This must be a comma-separated list of the monitor addresses from the primary cluster.
 ``ceph_rbd_mirror_remote_key`` : This must be the same value as the user (``{{ ceph_rbd_mirror_local_user }}``) keyring secret from the primary cluster.
 
 group_vars from the secondary cluster:
@@ -53,7 +53,7 @@ group_vars from the secondary cluster:
    ceph_rbd_mirror_remote_mon_hosts: 1.2.3.4
    ceph_rbd_mirror_remote_key: AQC+eM1iKKBXFBAAVpunJvqpkodHSYmljCFCnw==  # This must match the secret of the registered keyring of the user defined in {{ ceph_rbd_mirror_local_user }} on primary cluster.
 
-Once you variables are defined, you can run the playbook (you might want to run with --limit option):
+Once your variables are defined, you can run the playbook (you might want to run with --limit option):
 
 .. code-block:: shell
 
