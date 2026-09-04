@@ -16,6 +16,84 @@
   changed_when: false
   when: not ansible_check_mode
 
+- name: Mon. keyring cipher tasks
+  when:
+    - cephx | bool
+    - not ansible_check_mode
+  block:
+    - name: Check whether the mon. keyring is accepted by the monitors
+      ceph_key_info:
+        name: mon.
+        cluster: "{{ cluster }}"
+        user: mon.
+        user_key: "/var/lib/ceph/mon/{{ cluster }}-{{ monitor_name }}/keyring"
+        output_format: json
+        state: info
+      environment:
+        CEPH_CONTAINER_IMAGE: "{{ ceph_docker_registry + '/' + ceph_docker_image + ':' + ceph_docker_image_tag if containerized_deployment | bool else '' }}"
+        CEPH_CONTAINER_BINARY: "{{ container_binary }}"
+      register: _mon_keyring_status
+      run_once: true
+      delegate_to: "{{ groups[mon_group_name][0] }}"
+      failed_when: false
+      changed_when: false
+      no_log: "{{ no_log_on_ceph_key_tasks }}"
+
+    # The mon. secret is generated locally by ceph_key's generate_secret(),
+    # which can only emit the legacy cipher. When the cluster does not accept
+    # that cipher the monitors reject the keyring, so ask them to mint a new
+    # one and redistribute it.
+    - name: Rotate the mon. keyring when the monitors reject it
+      when: _mon_keyring_status.rc != 0
+      block:
+        - name: Rotate the mon. key
+          ansible.builtin.command: >
+            {{ container_exec_cmd }}
+            ceph
+            --cluster {{ cluster }}
+            auth rotate mon.
+          register: _mon_keyring_rotated
+          run_once: true
+          delegate_to: "{{ groups[mon_group_name][0] }}"
+          changed_when: true
+          no_log: "{{ no_log_on_ceph_key_tasks }}"
+
+        - name: Write the rotated mon. keyring on every monitor
+          ansible.builtin.copy:
+            dest: "/var/lib/ceph/mon/{{ cluster }}-{{ hostvars[item]['monitor_name'] }}/keyring"
+            content: "{{ _mon_keyring_rotated.stdout + '\n' }}"
+            owner: "{{ ceph_uid if containerized_deployment | bool else 'ceph' }}"
+            group: "{{ ceph_uid if containerized_deployment | bool else 'ceph' }}"
+            mode: "0600"
+          delegate_to: "{{ item }}"
+          loop: "{{ groups[mon_group_name] }}"
+          run_once: true
+          no_log: "{{ no_log_on_ceph_key_tasks }}"
+
+        - name: Restart the monitors to pick up the rotated keyring
+          ansible.builtin.systemd:
+            name: ceph-mon@{{ hostvars[item]['monitor_name'] if not containerized_deployment | bool else hostvars[item]['ansible_facts']['hostname'] }}
+            state: restarted
+          delegate_to: "{{ item }}"
+          loop: "{{ groups[mon_group_name] }}"
+          run_once: true
+
+        - name: Waiting for the monitor(s) to form the quorum again...
+          ansible.builtin.command: >
+            {{ container_exec_cmd }}
+            ceph
+            --cluster {{ cluster }}
+            daemon mon.{{ ansible_facts['hostname'] }}
+            mon_status
+            --format json
+          register: _mon_quorum_after_rotate
+          run_once: true
+          until: >
+            (_mon_quorum_after_rotate.stdout | length > 0) and (_mon_quorum_after_rotate.stdout | default('{}') | from_json)['state'] in ['leader', 'peon']
+          retries: "{{ handler_health_mon_check_retries }}"
+          delay: "{{ handler_health_mon_check_delay }}"
+          changed_when: false
+
 - name: Fetch ceph initial keys
   ceph_key:
     state: fetch_initial_keys

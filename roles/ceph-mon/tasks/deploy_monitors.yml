@@ -16,7 +16,7 @@
       register: initial_mon_key
       run_once: true
       delegate_to: "{{ running_mon | default(omit) }}"
-      failed_when: initial_mon_key.rc not in [0, 2]
+      failed_when: initial_mon_key.rc not in [0, 2, 13]
       no_log: "{{ no_log_on_ceph_key_tasks }}"
       when: running_mon is defined
 
@@ -59,6 +59,7 @@
       environment:
         CEPH_CONTAINER_IMAGE: "{{ ceph_docker_registry + '/' + ceph_docker_image + ':' + ceph_docker_image_tag if containerized_deployment | bool else '' }}"
         CEPH_CONTAINER_BINARY: "{{ container_binary }}"
+      when: initial_mon_key.rc | default(0) != 13
 
     - name: Copy the initial key in /etc/ceph (for containers)
       ansible.builtin.copy:
@@ -66,7 +67,9 @@
         dest: /etc/ceph/{{ cluster }}.mon.keyring
         remote_src: true
         mode: "0640"
-      when: containerized_deployment | bool
+      when:
+        - containerized_deployment | bool
+        - initial_mon_key.rc | default(0) != 13
 
 - name: Create monitor directory
   ansible.builtin.file:
