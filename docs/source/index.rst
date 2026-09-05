@@ -4,7 +4,6 @@ ceph-ansible
 
 Ansible playbooks for Ceph, the distributed filesystem.
 
-
 Installation
 ============
 
@@ -13,14 +12,20 @@ GitHub
 
 You can install directly from the source on GitHub by following these steps:
 
+- Install Git and python3-pip:
+
+  .. code-block:: console
+
+     $ dnf install git python3-pip
+
 - Clone the repository:
 
   .. code-block:: console
 
-     $ git clone https://github.com/ceph/ceph-ansible.git
+     $ git clone https://github.com/ceph/ceph-ansible
 
-- Next, you must decide which branch of ``ceph-ansible`` you wish to use. There
-  are stable branches to choose from or you could use the main branch:
+- Next, you must decide which branch of ``ceph-ansible`` you wish to use (for example: ``stable-9.0``).
+  There are stable branches to choose from or you could use the main branch:
 
   .. code-block:: console
 
@@ -31,12 +36,12 @@ You can install directly from the source on GitHub by following these steps:
 
   .. code-block:: console
 
-     $ pip install -r requirements.txt
+     $ python3 -m pip install -r requirements.txt
 
 .. _ansible-on-rhel-family:
 
-Ansible on RHEL and CentOS
---------------------------
+Ansible on RHEL, CentOS Stream, Rocky Linux or AlmaLinux
+--------------------------------------------------------
 
 You can acquire Ansible on RHEL and CentOS by installing from `Ansible channel <https://access.redhat.com/articles/3174981>`_.
 
@@ -46,11 +51,19 @@ On RHEL:
 
    $ subscription-manager repos --enable=rhel-7-server-ansible-2-rpms
 
-(CentOS does not use subscription-manager and already has "Extras" enabled by default.)
+On CentOS Stream, Rocky Linux or AlmaLinux need install EPEL repository:
 
 .. code-block:: console
 
-   $ sudo yum install ansible
+   $ sudo dnf install epel-release
+
+Install Ansible:
+
+.. code-block:: console
+
+   $ sudo dnf install ansible
+
+For Rocky Linux 10 or AlmaLinux 10, at this moment `package unavailable <https://bugzilla.redhat.com/show_bug.cgi?id=2308951>`_.
 
 Ansible on Ubuntu
 -----------------
@@ -73,7 +86,6 @@ please run:
 
    $ ansible-galaxy install -r requirements.yml
 
-
 Releases
 ========
 
@@ -95,7 +107,11 @@ The ``main`` branch should be considered experimental and used with caution.
 
 - ``stable-7.0`` Supports Ceph version ``quincy``. This branch requires Ansible version ``2.15``.
 
-- ``main`` Supports the main (devel) branch of Ceph. This branch requires Ansible version ``2.15`` or ``2.16``.
+- ``stable-8.0`` Supports Ceph version ``reef``. This branch requires Ansible version ``2.15`` or ``2.16``.
+
+- ``stable-9.0`` Supports Ceph version ``squid``. This branch requires Ansible version ``2.15``, ``2.16``, ``2.17``, ``2.18`` or ``2.19``.
+
+- ``main`` Supports the main (devel) branch of Ceph. This branch requires Ansible version ``2.15``, ``2.16``, ``2.17``, ``2.18`` or ``2.19``.
 
 .. NOTE:: ``stable-3.0`` and ``stable-3.1`` branches of ceph-ansible are deprecated and no longer maintained.
 
@@ -192,7 +208,6 @@ The following install options are also validated by the ``ceph-validate`` role:
 - ``ceph_repository`` set to ``dev``
 - ``ceph_repository`` set to ``community``
 
-
 Installation methods
 --------------------
 
@@ -237,7 +252,6 @@ selection or other aspects of your cluster.
 
 - ``ceph_origin``
 - ``public_network``
-
 
 When deploying RGW instance(s) you are required to set the ``radosgw_interface`` or ``radosgw_address`` config option.
 
